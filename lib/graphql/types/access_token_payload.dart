@@ -1,18 +1,29 @@
-
 import 'package:flutter_test_app/graphql/enums/token_type.dart';
 
-class AccessTokenPayload {
+final class AccessTokenPayload {
   final String id;
-  late TokenType type;
+  final TokenType type;
 
-  AccessTokenPayload({required this.id, required String type}) {
+  const AccessTokenPayload({
+    required this.id,
+    required this.type,
+  });
+
+  static TokenType parseType(String type) {
     switch (type) {
       case 'access':
-        this.type = TokenType.access;
+        return TokenType.access;
       case 'refresh':
-        this.type = TokenType.refresh;
+        return TokenType.refresh;
       default:
-        this.type = TokenType.access;
+        return TokenType.access;
     }
+  }
+
+  static AccessTokenPayload fromJSON(Map<String, dynamic> json) {
+    return AccessTokenPayload(
+      id: json['id'],
+      type: AccessTokenPayload.parseType(json['type']),
+    );
   }
 }

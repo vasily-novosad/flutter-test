@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 class CounterProvider extends ChangeNotifier {
   int _count = 0;
 
-  void incrementCounter() {
-    _count += 1;
+  void incrementCounter(int value) {
+    _count += value;
     notifyListeners();
   }
 

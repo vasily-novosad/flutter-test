@@ -1,47 +1,41 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_test_app/graphql/types/token_registration_error.dart';
 import 'package:flutter_test_app/graphql/types/token_registration_response.dart';
 import 'package:flutter_test_app/graphql/types/token_registration_success.dart';
-import 'package:flutter_test_app/redux/actions/auth_actions.dart';
-import 'package:flutter_test_app/redux/states/app_state.dart';
-import 'package:flutter_test_app/redux/states/auth_state.dart';
+import 'package:flutter_test_app/models/access_token_model.dart';
 import 'package:flutter_test_app/services/authenticator.dart';
-import 'package:flutter_test_app/services/storage.dart';
-import 'package:redux/redux.dart';
+import 'package:flutter_test_app/services/cache_manager.dart';
 
 class AuthentificationModel {
-  final Store<AppState> store;
+  final BuildContext context;
+  final StorageManager storage = StorageManager(mode: StorageManagerMode.app);
 
-  const AuthentificationModel(this.store);
+  AuthentificationModel(this.context);
 
-  Future<bool> requestAuthorization(String login, String password) async {
+  Future<String?> requestAuthorization(String login, String password) async {
     TokenRegistrationResponse response =
         await Auth().auth(login: login, password: password);
 
     if (response.error is TokenRegistrationError) {
-      return false;
+      return null;
     }
 
     if (response.success is TokenRegistrationSuccess) {
       TokenRegistrationSuccess data =
           response.success as TokenRegistrationSuccess;
-      String? token = data.payload.token;
+      String? token = data.payload.accessToken.token;
 
-      store.dispatch(SetTokenAction(token));
+      storage.set(StorageManagerRecord(key: 'token', content: token));
 
-      StorageAction storage = await Storage().getStorage();
-
-      storage.setItem('@token', token);
-
-      return true;
+      return token;
     }
 
-    return false;
+    return null;
   }
 
   Future<void> resetToken() async {
-    StorageAction storage = await Storage().getStorage();
-    store.dispatch(SetTokenAction(''));
-    storage.removeItem('@token');
+    // store.dispatch(SetTokenAction(''));
+    storage.clear('@token');
   }
 
   bool isTokenEmpty(String? token) {

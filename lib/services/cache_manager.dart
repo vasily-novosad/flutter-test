@@ -3,31 +3,39 @@ import 'dart:io';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 
-class CacheManager {
-  static final CacheManager _instance = CacheManager._internal();
-  static CacheManager _internal() => CacheManager();
-  static Directory? _cacheDir;
+class StorageManager {
+  static Directory? _storeDir;
+  final StorageManagerMode? mode;
 
-  factory CacheManager() => _instance;
+  const StorageManager({this.mode = StorageManagerMode.app});
 
-  Future<Directory> getCacheDir() async {
-    if (_cacheDir == null) {
-      final dir = await getApplicationCacheDirectory();
-      _cacheDir = dir;
+  Future<Directory> getStoreDir() async {
+    if (_storeDir == null) {
+      if (mode == StorageManagerMode.app) {
+        _storeDir = await getApplicationSupportDirectory();
+      }
+
+      if (mode == StorageManagerMode.cache) {
+        _storeDir = await getApplicationCacheDirectory();
+      }
     }
 
-    return _cacheDir!;
+    if (!_storeDir!.existsSync()) {
+      _storeDir!.createSync(recursive: true);
+    }
+
+    return _storeDir!;
   }
 
-  Future<String> buildCacheFilename(String key) async {
-    final dir = await getCacheDir();
-    final filePath = path.join(dir.path, 'cache.$key.json');
+  Future<String> buildFilename(String key) async {
+    final dir = await getStoreDir();
+    final filePath = path.join(dir.path, '$key.json');
 
     return filePath;
   }
 
-  Future<File?> getCacheFile(String baseFilename) async {
-    final dir = await getCacheDir();
+  Future<File?> getFileByName(String baseFilename) async {
+    final dir = await getStoreDir();
     final cachePath = path.join(dir.path, baseFilename);
     final cacheFile = File(cachePath);
 
@@ -39,38 +47,47 @@ class CacheManager {
   }
 
   Future<void> writeFile(String baseFilename, String content) async {
-    final dir = await getCacheDir();
-    final cachePath = path.join(dir.path, baseFilename);
-    final cacheFile = File(cachePath);
+    final dir = await getStoreDir();
+    final fullPath = path.join(dir.path, baseFilename);
+    final file = File(fullPath);
 
-    cacheFile.writeAsStringSync(content, mode: FileMode.write);
+    file.writeAsStringSync(content, mode: FileMode.write);
   }
 
-  Future<File?> getCacheFileByKey(String key) async {
-    String baseFilename = await buildCacheFilename(key);
-    File? cacheFile = await getCacheFile(baseFilename);
+  Future<File?> getFileByKey(String key) async {
+    String baseFilename = await buildFilename(key);
+    File? file = await getFileByName(baseFilename);
 
-    return cacheFile;
+    return file;
   }
 
   Future<bool> has(String key) async {
-    File? cacheFile = await getCacheFileByKey(key);
+    File? file = await getFileByKey(key);
 
-    return cacheFile != null && cacheFile.existsSync();
+    return file != null && file.existsSync();
   }
 
-  Future<void> set(String key, CacheRecord record) async {
-    String baseFilename = await buildCacheFilename(key);
+  Future<void> clear(String key) async {
+    File? file = await getFileByKey(key);
+
+    if (file != null && file.existsSync()) {
+      file.deleteSync();
+    }
+  }
+
+  Future<void> set(StorageManagerRecord record) async {
+    String baseFilename = await buildFilename(record.key);
     await writeFile(baseFilename, record.toJson());
   }
 
-  Future<CacheRecord?> get(String key) async {
-    File? cacheFile = await getCacheFileByKey(key);
+  Future<StorageManagerRecord?> get(String key) async {
+    File? file = await getFileByKey(key);
 
-    if (cacheFile != null) {
+    if (file != null) {
       try {
-        final content = cacheFile.readAsStringSync(encoding: utf8);
-        CacheRecord parsedRecord = CacheRecord.fromJSON(content);
+        final content = file.readAsStringSync(encoding: utf8);
+        StorageManagerRecord parsedRecord =
+            StorageManagerRecord.fromJSON(content);
 
         return parsedRecord;
       } catch (e) {
@@ -80,17 +97,23 @@ class CacheManager {
 
     return null;
   }
+
+  Future<void> deleteStore() async {
+    final dir = await getStoreDir();
+
+    dir.deleteSync(recursive: true);
+  }
 }
 
-class CacheRecord {
+class StorageManagerRecord {
   late String _key;
-  late DateTime _expired;
   late String _content;
+  late DateTime? _expired;
 
-  CacheRecord({
+  StorageManagerRecord({
     required String key,
-    required DateTime expiredAt,
     required String content,
+    DateTime? expiredAt,
   }) {
     _key = key;
     _expired = expiredAt;
@@ -98,29 +121,41 @@ class CacheRecord {
   }
 
   String get key => _key;
-  DateTime get expired => _expired;
-  String get getContent => _content;
+  DateTime? get expired => _expired;
+  String get content => _content;
   bool get isExpired {
-    return _expired.difference(DateTime.now()).inSeconds > 0;
+    if (_expired == null) {
+      return false;
+    }
+
+    return _expired!.difference(DateTime.now()).inSeconds > 0;
   }
 
   String toJson() {
     Map jsonMap = {
       'key': _key,
-      'expired': _expired.toUtc(),
       'content': _content,
     };
+
+    if (_expired != null) {
+      jsonMap['expired'] = _expired!.toUtc().toString();
+    }
 
     return jsonEncode(jsonMap);
   }
 
-  static CacheRecord fromJSON(String jsonString) {
+  static StorageManagerRecord fromJSON(String jsonString) {
     Map jsonMap = jsonDecode(jsonString);
 
-    return CacheRecord(
+    return StorageManagerRecord(
       key: '${jsonMap['key']}',
       expiredAt: DateTime.parse(jsonMap['expired']),
       content: '${jsonMap['content']}',
     );
   }
+}
+
+enum StorageManagerMode {
+  cache,
+  app,
 }

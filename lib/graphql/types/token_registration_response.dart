@@ -6,4 +6,11 @@ class TokenRegistrationResponse {
   final TokenRegistrationSuccess? success;
 
   TokenRegistrationResponse({this.error, this.success});
+
+  static TokenRegistrationResponse fromJSON(Map<String, dynamic> json) {
+    return  TokenRegistrationResponse(
+      error: json['error'] != null ? TokenRegistrationError.fromJSON(json['error']) : null,
+      success: json['success'] != null ? TokenRegistrationSuccess.fromJSON(json['success']) : null,
+    );
+  }
 }

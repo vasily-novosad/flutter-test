@@ -1,8 +1,13 @@
-import 'package:flutter_test_app/graphql/types/access_token_payload.dart';
+import 'package:flutter_test_app/graphql/types/access_token.dart';
 
 class TokenBag {
-  final AccessTokenPayload payload;
-  final String token;
+  final AccessToken accessToken;
 
-  TokenBag({required this.payload, required this.token}) ;
+  TokenBag({required this.accessToken});
+
+  static TokenBag fromJSON(Map<String, dynamic> json) {
+    return TokenBag(
+      accessToken: AccessToken.fromJSON(json['accessToken']),
+    );
+  }
 }

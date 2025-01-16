@@ -1,29 +1,31 @@
 import 'package:flutter/widgets.dart';
-import 'package:flutter_test_app/components/logout_button/logout_button_model.dart';
-import 'package:flutter_test_app/redux/states/app_state.dart';
-import 'package:redux/redux.dart';
+import 'package:flutter_test_app/models/authentification_model.dart';
+import 'package:flutter_test_app/providers/auth_provider.dart';
+import 'package:provider/provider.dart';
 
 class LogoutButtonViewModel {
-  final Store<AppState> store;
-  late LogoutButtonModel model;
+  final BuildContext context;
+  late AuthProvider authProvider;
+  late AuthentificationModel authModel;
 
-  LogoutButtonViewModel(this.store) {
-    model = LogoutButtonModel(store);
+  LogoutButtonViewModel(this.context) {
+    authProvider = Provider.of<AuthProvider>(context);
+    authModel = AuthentificationModel(context);
   }
 
   Text get label {
-    String label = model.hasToken ? 'Logout' : 'Not logged';
+    String label = authProvider.hasToken ? 'Logout' : 'Not logged';
 
     return Text(label);
   }
 
-  bool get shouldBeDisplayed => model.hasToken;
+  bool get shouldBeDisplayed => authProvider.hasToken;
 
   void clickAction() {
-    if (!model.hasToken) {
+    if (!authProvider.hasToken) {
       return;
     }
 
-    model.logoutAction();
+    authModel.resetToken();
   }
 }

@@ -1,11 +1,8 @@
 import 'package:flutter/cupertino.dart';
-// import 'package:flutter_test_app/components/appbar/appbar.dart';
 import 'package:flutter_test_app/components/button/button.dart';
-import 'package:flutter_test_app/components/logout_button/logout_button_widget.dart';
-import 'package:flutter_test_app/providers/counter_provider.dart';
-import 'package:flutter_test_app/screens/home_screen/counter_btn.dart';
-import 'package:flutter_test_app/screens/home_screen/token_informer/token_informer_widget.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_test_app/screens/home_screen/order_info.dart';
+import 'package:flutter_test_app/services/cache_manager.dart';
+import 'package:go_router/go_router.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -59,11 +56,18 @@ class _HomeScreen extends State<HomeScreen> {
         child: Builder(builder: (context) {
           return Column(
             children: [
-              TokenInformer(),
-              LogoutButton(),
-              CounterView(),
-              CounterButton(),
+              OrderInfo(),
               Button(text: 'Display sheet', onPressed: displaySheet),
+              Button(
+                  text: 'Go to Login screen',
+                  onPressed: () {
+                    context.go('/login');
+                  }),
+              Button(
+                  text: 'Clear cache',
+                  onPressed: () {
+                    StorageManager().deleteStore();
+                  }),
             ],
           );
         }),

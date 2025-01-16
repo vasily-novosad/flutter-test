@@ -1,22 +1,15 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_test_app/components/button/button.dart';
-import 'package:flutter_test_app/redux/actions/ui_actions.dart';
-import 'package:flutter_test_app/redux/selectors/ui_selectors.dart';
-import 'package:flutter_test_app/redux/states/app_state.dart';
-import 'package:redux/redux.dart';
+import 'package:flutter_test_app/providers/counter_provider.dart';
+import 'package:provider/provider.dart';
 
 class CounterView extends StatelessWidget {
   const CounterView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<AppState, int>(
-      converter: (store) => counterSelector(store.state),
-      builder: (context, value) {
-        return Text(value.toString());
-      },
-    );
+    final _CounterButtonViewModel viewModel = _CounterButtonViewModel(context);
+    return Text(viewModel.label);
   }
 }
 
@@ -27,28 +20,24 @@ class CounterButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<AppState, _CounterButtonViewModel>(
-      converter: (store) => _CounterButtonViewModel(store),
-      builder: (context, vm) {
-        final String currentValue = vm.counter.toString();
+    final _CounterButtonViewModel viewModel = _CounterButtonViewModel(context);
 
-        return Button(
-          text: 'Increment up to $currentValue',
-          onPressed: () => vm.incrementCounter(5),
-        );
-      },
-    );
+    return Button(text: viewModel.label, onPressed: viewModel.onPressed);
   }
 }
 
 class _CounterButtonViewModel {
-  final Store<AppState> store;
+  final BuildContext context;
+  const _CounterButtonViewModel(this.context);
 
-  const _CounterButtonViewModel(this.store);
+  String get label {
+    int count =
+        Provider.of<CounterProvider>(context, listen: true).counterValue;
 
-  int get counter => store.state.uiState.counter;
+    return 'label if $count';
+  }
 
-  void incrementCounter(int value) {
-    store.dispatch(IncrementCounterAction(value));
+  void onPressed() {
+    Provider.of<CounterProvider>(context, listen: false).incrementCounter(1);
   }
 }
