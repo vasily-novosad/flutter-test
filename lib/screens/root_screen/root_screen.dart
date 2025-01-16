@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_test_app/components/bottom_nav/bottom_nav.dart';
-import 'package:flutter_test_app/components/appbar/appbar.dart';
+import 'package:flutter/cupertino.dart';
 
 class Root extends StatelessWidget {
   final Widget child;
@@ -9,9 +7,10 @@ class Root extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: MyAppbar().getAppBar(context),
-        bottomNavigationBar: BottomNav(),
-        body: child);
+    return CupertinoPageScaffold(
+        // appBar: MyAppbar().getAppBar(context),
+        // bottomNavigationBar: BottomNav(),
+        child: child,
+    );
   }
 }

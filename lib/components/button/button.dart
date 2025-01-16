@@ -1,14 +1,27 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 
 class Button extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
-  const Button({super.key, required this.text, required this.onPressed});
+  final bool? disabled;
+
+  const Button({
+    super.key,
+    required this.text,
+    required this.onPressed,
+    this.disabled,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: onPressed,
+    return CupertinoButton.filled(
+      onPressed: () {
+        if (disabled.runtimeType.toString() == 'boolean' && disabled == true) {
+          return;
+        }
+
+        onPressed();
+      },
       child: Text(text),
     );
   }

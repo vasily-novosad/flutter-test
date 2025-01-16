@@ -1,6 +1,4 @@
-// import 'package:flutter/widgets.dart';
-import 'package:flutter/material.dart';
-// import 'package:flutter_test_app/screens/home_screen/appbar.dart';
+import 'package:flutter/cupertino.dart';
 
 class HomeInfoScreen extends StatelessWidget {
   const HomeInfoScreen({super.key});
@@ -8,6 +6,5 @@ class HomeInfoScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(child: Text('It is Home info'));
-    // appBar: MyAppbar(context).getAppBar(),
   }
 }

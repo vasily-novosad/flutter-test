@@ -1,6 +1,6 @@
 
 
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 
 class PaddedText extends StatelessWidget {
   const PaddedText({super.key});

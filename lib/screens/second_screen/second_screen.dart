@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 
 class SecondScreen extends StatelessWidget {
   const SecondScreen({super.key});
@@ -7,10 +7,13 @@ class SecondScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Builder(builder: (context) {
-        return Column(
-          children: [
-            const Text('The second screen'),
-          ],
+        return Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text('The second screen'),
+            ],
+          ),
         );
       }),
     );
