@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 // import 'package:flutter_redux/flutter_redux.dart';
@@ -8,6 +9,8 @@ import 'package:flutter_test_app/providers/counter_provider.dart';
 // import 'package:flutter_test_app/redux/store.dart';
 import 'package:flutter_test_app/routes/routes.dart';
 import 'package:flutter_test_app/screens/home_screen/order_info.dart';
+import 'package:flutter_test_app/screens/splash_screen/splash_screen.dart';
+import 'package:flutter_test_app/services/storage_manager.dart';
 // import 'package:flutter_test_app/redux/states/app_state.dart';
 // import 'package:flutter_test_app/screens/splash_screen/splash_screen.dart';
 // import 'package:flutter_test_app/services/storage.dart';
@@ -37,6 +40,7 @@ class _MyApp extends State<MyApp> {
   _MyApp();
 
   LoadingState _loadedState = LoadingState.none;
+  LoadedStore? _loadedStore;
   // Store<AppState>? _store;
 
   @override
@@ -49,19 +53,26 @@ class _MyApp extends State<MyApp> {
       _MyAppViewModel().loadStore().then((store) {
         setState(() {
           _loadedState = LoadingState.loaded;
+          _loadedStore = store;
           // _store = store;
         });
       });
     }
 
-    // if (_store is Store<AppState>) {
     GoRouter routes = createRoutes();
+
+    if (_loadedState != LoadingState.loaded) {
+      return CupertinoApp(theme: MainTheme.lightTheme, home: SplashScreen());
+    }
+
     return MultiProvider(
         providers: [
           ChangeNotifierProvider<CounterProvider>(
               create: (_) => CounterProvider()),
-          ChangeNotifierProvider<OrderInfoViewModel>(create: (_) => OrderInfoViewModel()),
-          ChangeNotifierProvider<AuthProvider>(create: (_) => AuthProvider()),
+          ChangeNotifierProvider<OrderInfoViewModel>(
+              create: (_) => OrderInfoViewModel()),
+          ChangeNotifierProvider<AuthProvider>(
+              create: (_) => AuthProvider(token: _loadedStore?.token)),
         ],
         child: CupertinoApp.router(
           theme: MainTheme.lightTheme,
@@ -71,6 +82,12 @@ class _MyApp extends State<MyApp> {
 
     // return CupertinoApp(theme: MainTheme.lightTheme, home: SplashScreen());
   }
+}
+
+class LoadedStore {
+  final String? token;
+
+  LoadedStore({required this.token});
 }
 
 class _MyAppViewModel {
@@ -86,15 +103,17 @@ class _MyAppViewModel {
     await completer.future;
   }
 
-  Future<void> loadStore() async {
+  Future<LoadedStore> loadStore() async {
+    StorageManager appStorage = StorageManager(mode: StorageManagerMode.app);
+    StorageManagerRecord? authRecord = await appStorage.get('token');
+
+    return LoadedStore(token: authRecord?.content);
     // StorageAction storage = await Storage().getStorage();
 
     // String? token = storage.getItem('@token');
     // Store<AppState> store = createStore(AppState(
     //     authState:
     //         AuthentificationState(accessToken: AccessToken(token: token))));
-
-    await delay(3);
 
     // var v = _RouterProvider();
 

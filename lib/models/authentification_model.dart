@@ -1,10 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_test_app/graphql/types/token_registration_error.dart';
 import 'package:flutter_test_app/graphql/types/token_registration_response.dart';
 import 'package:flutter_test_app/graphql/types/token_registration_success.dart';
 import 'package:flutter_test_app/models/access_token_model.dart';
 import 'package:flutter_test_app/services/authenticator.dart';
-import 'package:flutter_test_app/services/cache_manager.dart';
+import 'package:flutter_test_app/services/storage_manager.dart';
 
 class AuthentificationModel {
   final BuildContext context;

@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_test_app/services/cache_manager.dart';
+import 'package:flutter_test_app/services/storage_manager.dart';
 import 'package:http/http.dart' as http;
 import 'package:crypto/crypto.dart';
 import 'dart:developer';
@@ -15,11 +15,13 @@ final class GraphQLError {
 final class GraphQLResponse<T> {
   final T? data;
   final List<GraphQLError>? errors;
-
   GraphQLResponse({this.data, this.errors});
 }
 
 class GraphQL {
+    final StorageManager cacheManager =
+      StorageManager(mode: StorageManagerMode.cache);
+      
   String endpoint = 'http://localhost:9005/graphql';
 
   Map<String, dynamic> _parseResponse(String jsonString) {
@@ -40,8 +42,6 @@ class GraphQL {
     bool? ignoreCache,
     bool? noSaveToCache,
   }) async {
-    StorageManager cacheManager = StorageManager();
-
     // Compile the cache key
     Uint8List bytes = utf8.encode(jsonEncode({
       'query': query,

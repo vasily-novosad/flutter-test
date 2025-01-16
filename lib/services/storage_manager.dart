@@ -4,27 +4,25 @@ import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 
 class StorageManager {
-  static Directory? _storeDir;
   final StorageManagerMode? mode;
 
-  const StorageManager({this.mode = StorageManagerMode.app});
+  const StorageManager({this.mode = StorageManagerMode.cache});
 
   Future<Directory> getStoreDir() async {
-    if (_storeDir == null) {
-      if (mode == StorageManagerMode.app) {
-        _storeDir = await getApplicationSupportDirectory();
-      }
-
-      if (mode == StorageManagerMode.cache) {
-        _storeDir = await getApplicationCacheDirectory();
-      }
+    Directory? dir;
+    if (mode == StorageManagerMode.app) {
+      dir = await getApplicationSupportDirectory();
     }
 
-    if (!_storeDir!.existsSync()) {
-      _storeDir!.createSync(recursive: true);
+    if (mode == StorageManagerMode.cache) {
+      dir = await getApplicationCacheDirectory();
     }
 
-    return _storeDir!;
+    if (dir!.existsSync()) {
+      dir.createSync(recursive: true);
+    }
+
+    return dir;
   }
 
   Future<String> buildFilename(String key) async {
@@ -91,6 +89,8 @@ class StorageManager {
 
         return parsedRecord;
       } catch (e) {
+        print('Parsing error');
+
         return null;
       }
     }
@@ -149,7 +149,9 @@ class StorageManagerRecord {
 
     return StorageManagerRecord(
       key: '${jsonMap['key']}',
-      expiredAt: DateTime.parse(jsonMap['expired']),
+      expiredAt: jsonMap['expired'] != null
+          ? DateTime.parse(jsonMap['expired'])
+          : null,
       content: '${jsonMap['content']}',
     );
   }

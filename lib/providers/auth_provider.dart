@@ -4,7 +4,11 @@ class AuthProvider extends ChangeNotifier {
   String? _token;
   bool _dataFetchingInProgress = false;
 
-  AuthProvider();
+  AuthProvider({String? token}) {
+    if (token != null) {
+      _token = token;
+    }
+  }
 
   void setToken(String? token) {
     _token = token;

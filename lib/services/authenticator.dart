@@ -43,10 +43,16 @@ class Auth extends GraphQL {
       }
     ''';
 
-    GraphQLResponse data = await request(variables: {
-      'login': login,
-      'password': password,
-    }, operationName: 'Authentification', query: query);
+    GraphQLResponse data = await request(
+      variables: {
+        'login': login,
+        'password': password,
+      },
+      operationName: 'Authentification',
+      query: query,
+      ignoreCache: true,
+      noSaveToCache: true,
+    );
 
     return _parseResponse(data);
   }
