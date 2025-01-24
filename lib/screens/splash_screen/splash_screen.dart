@@ -1,21 +1,18 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return CupertinoPageScaffold(
-      child: Center(
+    return Scaffold(
+      body: Center(
         child: Builder(builder: (context) {
           return Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const CupertinoActivityIndicator(
-                  radius: 20.0,
-                  color: CupertinoColors.activeBlue,
-                ),
+                const CircularProgressIndicator(),
               ],
             ),
           );

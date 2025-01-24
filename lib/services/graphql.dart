@@ -22,7 +22,7 @@ class GraphQL {
     final StorageManager cacheManager =
       StorageManager(mode: StorageManagerMode.cache);
       
-  String endpoint = 'http://localhost:9005/graphql';
+  String endpoint = 'http://192.168.0.4:9005/graphql';
 
   Map<String, dynamic> _parseResponse(String jsonString) {
     Map<String, dynamic> parsed = json.decode(jsonString);

@@ -1,8 +1,9 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test_app/components/appbar/appbar.dart';
 import 'package:flutter_test_app/components/button/button.dart';
 import 'package:flutter_test_app/models/authentification_model.dart';
 import 'package:flutter_test_app/providers/auth_provider.dart';
+import 'package:flutter_test_app/components/login_form/login_form.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
@@ -11,55 +12,57 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CupertinoPageScaffold(
-      navigationBar: MyAppbar(Text('Login screen')).getAppBar(context),
-      // appBar: MyAppbar(Text('Login screen')).getAppBar(context),
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Button(
-                text: 'Go to home screen',
-                onPressed: () {
-                  GoRouter.of(context).go('/profile');
-                }),
-            Builder(builder: (_) {
-              return Text('just example');
-            }),
-            Builder(builder: (context) {
-              // String? str = Provider.of<AuthProvider>(context).tokenValue;
-              String? str = _LoginScreenViewModel(context).token;
-
-              return Text(str ?? 'no token');
-            }),
-            Consumer<AuthProvider>(builder: (context, viewModel, _) {
-              final String label =
-                  viewModel.tokenValue != null ? 'Logout' : 'Login';
-
-              if (viewModel.isFetching) {
-                return CupertinoActivityIndicator();
-              }
-
-              return Button(
-                  text: label,
+    return Scaffold(
+      appBar: MyAppbar(Text('Login screen')).getAppBar(context),
+      body: SingleChildScrollView(
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              LoginForm(),
+              Button(
+                  text: 'Go to home screen',
                   onPressed: () {
-                    if (viewModel.tokenValue != null) {
-                      AuthentificationModel(context).resetToken();
-                      viewModel.setToken(null);
+                    GoRouter.of(context).go('/profile');
+                  }),
+              Builder(builder: (_) {
+                return Text('just example');
+              }),
+              Builder(builder: (context) {
+                // String? str = Provider.of<AuthProvider>(context).tokenValue;
+                String? str = _LoginScreenViewModel(context).token;
 
-                      return;
-                    }
+                return Text(str ?? 'no token');
+              }),
+              Consumer<AuthProvider>(builder: (context, viewModel, _) {
+                final String label =
+                viewModel.tokenValue != null ? 'Logout' : 'Login';
 
-                    viewModel.setDataFetchingState(true);
-                    AuthentificationModel(context)
-                        .requestAuthorization('dev', 'dev')
-                        .then((maybeToken) {
-                      viewModel.setToken(maybeToken);
+                if (viewModel.isFetching) {
+                  return CircularProgressIndicator();
+                }
+
+                return Button(
+                    text: label,
+                    onPressed: () {
+                      if (viewModel.tokenValue != null) {
+                        AuthentificationModel(context).resetToken();
+                        viewModel.setToken(null);
+
+                        return;
+                      }
+
+                      viewModel.setDataFetchingState(true);
+                      AuthentificationModel(context)
+                          .requestAuthorization('dev', 'dev')
+                          .then((maybeToken) {
+                        viewModel.setToken(maybeToken);
+                      });
                     });
-                  });
-            }),
-          ],
+              }),
+            ],
+          ),
         ),
       ),
     );

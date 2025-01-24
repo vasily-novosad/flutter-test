@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test_app/components/button/button.dart';
 import 'package:flutter_test_app/screens/home_screen/order_info.dart';
 import 'package:flutter_test_app/services/storage_manager.dart';
@@ -16,52 +16,21 @@ class _HomeScreen extends State<HomeScreen> {
   Widget build(BuildContext context) {
     print('>>>>>>> Home render');
 
-    void displaySheet() {
-      showCupertinoModalPopup(
-          context: context,
-          builder: (BuildContext context) {
-            return CupertinoActionSheet(
-              title: const Text('Title'),
-              message: const Text('Message'),
-              actions: [
-                CupertinoActionSheetAction(
-                  onPressed: () {
-                    print('ok');
-                    Navigator.pop(context);
-                  },
-                  child: Text('Item 1'),
-                ),
-                CupertinoActionSheetAction(
-                  onPressed: () {
-                    print('ok');
-                    Navigator.pop(context);
-                  },
-                  child: Text('Item 2'),
-                ),
-                CupertinoActionSheetAction(
-                  isDestructiveAction: true,
-                  onPressed: () {
-                    print('ok');
-                    Navigator.pop(context);
-                  },
-                  child: Text('Dismiss'),
-                ),
-              ],
-            );
-          });
-    }
-
-    return CupertinoScrollbar(
+    return Scrollbar(
       child: Center(
         child: Builder(builder: (context) {
           return Column(
             children: [
               OrderInfo(),
-              Button(text: 'Display sheet', onPressed: displaySheet),
-              Button(
-                  text: 'Go to Login screen',
+              ElevatedButton(
+                  child: Text('Go to Login screen'),
                   onPressed: () {
                     context.go('/login');
+                  }),
+              ElevatedButton(
+                  child: Text('Go to info'),
+                  onPressed: () {
+                    context.go('/profile/info');
                   }),
               Button(
                   text: 'Clear cache',

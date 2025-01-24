@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test_app/components/appbar/appbar.dart';
 // import 'package:flutter_test_app/components/bottom_nav/bottom_nav.dart';
 import 'package:flutter_test_app/screens/home_info_screen/home_info_screen.dart';
@@ -10,7 +10,7 @@ import 'package:go_router/go_router.dart';
 // final List<RouteBase> routes = [
 //   ShellRoute(
 //     builder: (context, state, child) {
-//       return CupertinoPageScaffold(
+//       return Scaffold(
 //         child: child,
 //       );
 //     },
@@ -23,7 +23,7 @@ import 'package:go_router/go_router.dart';
 //   ),
 //   ShellRoute(
 //     builder: (context, state, child) {
-//       return CupertinoPageScaffold(
+//       return Scaffold(
 //         child: Padding(
 //             padding: EdgeInsets.only(
 //               top: MediaQuery.of(context).padding.top,
@@ -52,10 +52,10 @@ import 'package:go_router/go_router.dart';
 final List<RouteBase> profileRoutes = [
   ShellRoute(
     builder: (context, state, child) {
-      return CupertinoPageScaffold(
-        navigationBar: MyAppbar(Text('Home screen')).getAppBar(context),
+      return Scaffold(
+        appBar: MyAppbar(Text('Home screen')).getAppBar(context),
         // child: child,
-        child: SafeArea(child: child),
+        body: child,
         // bottomNavigationBar: BottomNav(),
       );
     },

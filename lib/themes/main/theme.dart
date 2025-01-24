@@ -1,13 +1,12 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
-// import 'colors.dart';
+import 'colors.dart';
 
 class MainTheme {
-  static CupertinoThemeData get lightTheme {
-    return CupertinoThemeData(brightness: Brightness.light
-        // scaffoldBackgroundColor:
-        // primaryColor: primaryColor,
-        // scaffoldBackgroundColor: surfacePrimary,
-        );
+  static ThemeData get lightTheme {
+    return ThemeData(
+      primaryColor: primaryColor,
+      scaffoldBackgroundColor: surfacePrimary,
+    );
   }
 }

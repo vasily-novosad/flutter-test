@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class Button extends StatelessWidget {
   final String text;
@@ -14,7 +14,7 @@ class Button extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CupertinoButton.filled(
+    return MaterialButton(
       onPressed: () {
         if (disabled.runtimeType.toString() == 'boolean' && disabled == true) {
           return;

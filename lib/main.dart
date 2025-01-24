@@ -1,7 +1,6 @@
 import 'dart:async';
-import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 // import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_test_app/providers/auth_provider.dart';
 import 'package:flutter_test_app/providers/counter_provider.dart';
@@ -62,7 +61,7 @@ class _MyApp extends State<MyApp> {
     GoRouter routes = createRoutes();
 
     if (_loadedState != LoadingState.loaded) {
-      return CupertinoApp(theme: MainTheme.lightTheme, home: SplashScreen());
+      return MaterialApp(theme: MainTheme.lightTheme, home: SplashScreen());
     }
 
     return MultiProvider(
@@ -74,7 +73,7 @@ class _MyApp extends State<MyApp> {
           ChangeNotifierProvider<AuthProvider>(
               create: (_) => AuthProvider(token: _loadedStore?.token)),
         ],
-        child: CupertinoApp.router(
+        child: MaterialApp.router(
           theme: MainTheme.lightTheme,
           routerConfig: routes,
         ));

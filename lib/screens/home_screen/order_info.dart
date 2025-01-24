@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test_app/components/button/button.dart';
 import 'package:flutter_test_app/graphql/types/order.dart';
 import 'package:flutter_test_app/providers/auth_provider.dart';
@@ -25,7 +25,7 @@ class OrderInfo extends StatelessWidget {
           return SizedBox();
         }
 
-        return CupertinoActivityIndicator();
+        return CircularProgressIndicator();
       }),
       Consumer<OrderInfoViewModel>(builder: (_, model, __) {
         final Order? order = model.order;

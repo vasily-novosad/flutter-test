@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test_app/components/logout_button/logout_button_view_model.dart';
 
 typedef Callback = void Function();
@@ -21,7 +21,7 @@ class LogoutButton extends StatelessWidget {
       return const SizedBox.shrink();
     }
 
-    return CupertinoButton.filled(
+    return TextButton(
         onPressed: viewModel.clickAction, // prevent formatting
         child: viewModel.label);
   }

@@ -1,6 +1,4 @@
-import 'dart:io';
-
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test_app/graphql/types/token_registration_error.dart';
 import 'package:flutter_test_app/graphql/types/token_registration_response.dart';
 import 'package:flutter_test_app/graphql/types/token_registration_success.dart';
