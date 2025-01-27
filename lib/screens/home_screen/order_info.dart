@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test_app/components/button/button.dart';
 import 'package:flutter_test_app/graphql/types/order.dart';
@@ -13,12 +15,20 @@ class OrderInfo extends StatelessWidget {
     return Column(children: [
       Button(
           text: 'Get order info',
-          
           onPressed: () {
             String? token =
                 Provider.of<AuthProvider>(context, listen: false).tokenValue;
             Provider.of<OrderInfoViewModel>(context, listen: false)
-                .fetchOrderInfo('00013750-8c38-431d-b9b5-3adfe2e3a009', token);
+                .fetchOrderInfo('00013750-8c38-431d-b9b5-3adfe2e3a009', token)
+            //     .catchError((exception) {
+            //   if (exception is HttpException) {
+            //     if (context.mounted) {
+            //       ScaffoldMessenger.of(context)
+            //           .showSnackBar(SnackBar(content: Text(exception.message)));
+            //     }
+            //   }
+            // })
+            ;
           }),
       Consumer<OrderInfoViewModel>(builder: (_, model, __) {
         if (!model.isLoading) {
@@ -36,16 +46,6 @@ class OrderInfo extends StatelessWidget {
 
         return Text('order #${order.number}');
       }),
-      // Builder(builder: (context) {
-      //   final Order? order =
-      //       Provider.of<OrderInfoViewModel>(context, listen: true).order;
-
-      //   if (order == null) {
-      //     return SizedBox();
-      //   }
-
-      //   return Text('order #${order.number}');
-      // }),
     ]);
   }
 }
@@ -76,16 +76,21 @@ class OrderInfoViewModel extends ChangeNotifier {
       variables: variables,
     );
     if (response.errors != null) {
-      print('has errors');
+      String message =
+          response.errors!.isNotEmpty ? response.errors![0].message! : '';
 
+      _isLoading = false;
+      notifyListeners();
+
+      throw HttpException(message);
     }
 
     if (response.data != null && response.data['orders']['order'] != null) {
-      _order = Order.fromJSON(response.data['orders']['order']);
-    }
 
-    _isLoading = false;
-    notifyListeners();
+      _order = Order.fromJSON(response.data['orders']['order']);
+      _isLoading = false;
+      notifyListeners();
+    }
   }
 }
 

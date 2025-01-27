@@ -4,6 +4,7 @@ import 'package:flutter_test_app/components/button/button.dart';
 import 'package:flutter_test_app/models/authentification_model.dart';
 import 'package:flutter_test_app/providers/auth_provider.dart';
 import 'package:flutter_test_app/components/login_form/login_form.dart';
+import 'package:flutter_test_app/services/storage_manager.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
@@ -12,6 +13,8 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final StorageManager storage = StorageManager(mode: StorageManagerMode.app);
+
     return Scaffold(
       appBar: MyAppbar(Text('Login screen')).getAppBar(context),
       body: SingleChildScrollView(
@@ -37,7 +40,7 @@ class LoginScreen extends StatelessWidget {
               }),
               Consumer<AuthProvider>(builder: (context, viewModel, _) {
                 final String label =
-                viewModel.tokenValue != null ? 'Logout' : 'Login';
+                    viewModel.tokenValue != null ? 'Logout' : 'Login';
 
                 if (viewModel.isFetching) {
                   return CircularProgressIndicator();
@@ -45,9 +48,12 @@ class LoginScreen extends StatelessWidget {
 
                 return Button(
                     text: label,
-                    onPressed: () {
+                    onPressed: () async {
                       if (viewModel.tokenValue != null) {
                         AuthentificationModel(context).resetToken();
+                        Provider.of<AuthProvider>(context, listen: false)
+                            .setToken(null);
+                        await storage.clear('@token');
                         viewModel.setToken(null);
 
                         return;

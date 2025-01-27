@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test_app/services/storage_manager.dart';
 import 'package:http/http.dart' as http;
 import 'package:crypto/crypto.dart';
@@ -19,9 +20,9 @@ final class GraphQLResponse<T> {
 }
 
 class GraphQL {
-    final StorageManager cacheManager =
+  final StorageManager cacheManager =
       StorageManager(mode: StorageManagerMode.cache);
-      
+
   String endpoint = 'http://192.168.0.4:9005/graphql';
 
   Map<String, dynamic> _parseResponse(String jsonString) {
@@ -107,14 +108,14 @@ class GraphQL {
       );
 
       // Save response into the cache
-      if (noSaveToCache == null || !noSaveToCache) {
+      if ((noSaveToCache == null || !noSaveToCache)) {
         await cacheManager.set(StorageManagerRecord(
             key: cacheKey,
             expiredAt: DateTime(2025, 9, 1),
             content: jsonEncode({
               'response': {
                 'data': parseResponse['data'],
-                'errors': errors.isEmpty ? null : errors,
+                'errors': errors.isEmpty ? null : parseResponse['errors'],
               }
             })));
       }

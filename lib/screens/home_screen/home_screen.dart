@@ -38,6 +38,12 @@ class _HomeScreen extends State<HomeScreen> {
                     StorageManager(mode: StorageManagerMode.cache)
                         .deleteStore();
                   }),
+              Button(
+                  text: 'Clear data',
+                  onPressed: () {
+                    StorageManager(mode: StorageManagerMode.app)
+                        .deleteStore();
+                  }),
             ],
           );
         }),
