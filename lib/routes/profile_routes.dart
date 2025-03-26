@@ -5,6 +5,7 @@ import 'package:flutter_test_app/screens/home_info_screen/home_info_screen.dart'
 import 'package:flutter_test_app/screens/home_screen/home_screen.dart';
 // import 'package:flutter_test_app/screens/login_screen/login_screen.dart';
 import 'package:flutter_test_app/screens/second_screen/second_screen.dart';
+import 'package:flutter_test_app/screens/map_test_screen/map_test_screen.dart';
 import 'package:go_router/go_router.dart';
 
 // final List<RouteBase> routes = [
@@ -53,7 +54,7 @@ final List<RouteBase> profileRoutes = [
   ShellRoute(
     builder: (context, state, child) {
       return Scaffold(
-        appBar: MyAppbar(Text('Home screen')).getAppBar(context),
+        appBar: MyAppbar(Text('The screen')).of(context),
         // child: child,
         body: child,
         // bottomNavigationBar: BottomNav(),
@@ -64,6 +65,9 @@ final List<RouteBase> profileRoutes = [
           path: '/profile',
           builder: (context, state) => const HomeScreen(),
           routes: [
+             GoRoute(
+                path: 'map',
+                builder: (context, state) => const MapTestScreen()),
             GoRoute(
                 path: 'info',
                 builder: (context, state) => const HomeInfoScreen()),

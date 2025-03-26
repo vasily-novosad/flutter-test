@@ -28,15 +28,6 @@ class Auth extends GraphQL {
                   }
                 }
               }
-              query {
-                me {
-                  __typename
-                  ... on User {
-                    id
-                    name
-                  }
-                }
-              }
             }
           }
         }

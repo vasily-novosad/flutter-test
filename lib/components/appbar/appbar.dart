@@ -6,7 +6,7 @@ class MyAppbar {
   Text title;
   MyAppbar(this.title);
 
-  AppBar getAppBar(BuildContext context) {
+  AppBar of(BuildContext context) {
     return AppBar(
         title: title,
         centerTitle: true,

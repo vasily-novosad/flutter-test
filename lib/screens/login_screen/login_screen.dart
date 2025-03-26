@@ -16,7 +16,7 @@ class LoginScreen extends StatelessWidget {
     final StorageManager storage = StorageManager(mode: StorageManagerMode.app);
 
     return Scaffold(
-      appBar: MyAppbar(Text('Login screen')).getAppBar(context),
+      appBar: MyAppbar(Text('Login screen')).of(context),
       body: SingleChildScrollView(
         child: Center(
           child: Column(
@@ -40,7 +40,7 @@ class LoginScreen extends StatelessWidget {
               }),
               Consumer<AuthProvider>(builder: (context, viewModel, _) {
                 final String label =
-                    viewModel.tokenValue != null ? 'Logout' : 'Login';
+                    viewModel.tokenValue != null ? 'Logout' : 'Autologin';
 
                 if (viewModel.isFetching) {
                   return CircularProgressIndicator();

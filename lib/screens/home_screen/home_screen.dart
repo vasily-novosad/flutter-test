@@ -23,6 +23,12 @@ class _HomeScreen extends State<HomeScreen> {
             children: [
               OrderInfo(),
               ElevatedButton(
+                child: Text('Go to maps'),
+                onPressed: () {
+                  context.go('/profile/map');
+                },
+              ),
+              ElevatedButton(
                   child: Text('Go to Login screen'),
                   onPressed: () {
                     context.go('/login');

@@ -14,7 +14,7 @@ class Button extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialButton(
+    return ElevatedButton(
       onPressed: () {
         if (disabled.runtimeType.toString() == 'boolean' && disabled == true) {
           return;
