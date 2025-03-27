@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_test_app/models/authentification_model.dart';
-import 'package:flutter_test_app/providers/auth_provider.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:flutter_test_app/models/authentication_model.dart';
+import 'package:flutter_test_app/redux/app/app_state.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
 
 final class FieldLoginController {
   final TextEditingController controller = TextEditingController();
@@ -26,7 +26,7 @@ final class FormController {
       String login = FormController.login.controller.value.text.trim();
       String password = FormController.password.controller.value.text.trim();
 
-      AuthentificationModel(context)
+      AuthenticationModel(store: StoreProvider.of<AppState>(context))
           .requestAuthorization(login, password)
           .then((maybeToken) {
         if (context.mounted) {
@@ -44,30 +44,11 @@ final class FormController {
             ScaffoldMessenger.of(context)
                 .showSnackBar(SnackBar(content: Text('Failure')));
           }
-
-          Provider.of<AuthProvider>(context, listen: false)
-              .setToken(maybeToken);
         }
       });
     } else {
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text('Error')));
     }
-  }
-}
-
-class FormValidator {
-  static String? validateLogin(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'Please enter your username';
-    }
-    return null;
-  }
-
-  static String? validatePassword(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'Please enter your password';
-    }
-    return null;
   }
 }

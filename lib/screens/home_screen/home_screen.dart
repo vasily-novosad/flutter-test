@@ -14,7 +14,6 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreen extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
-    print('>>>>>>> Home render');
 
     return Scrollbar(
       child: Center(
@@ -22,6 +21,12 @@ class _HomeScreen extends State<HomeScreen> {
           return Column(
             children: [
               OrderInfo(),
+              ElevatedButton(
+                child: Text('Go to Redux test screen'),
+                onPressed: () {
+                  context.go('/redux');
+                },
+              ),
               ElevatedButton(
                 child: Text('Go to maps'),
                 onPressed: () {

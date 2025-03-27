@@ -1,16 +1,20 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_test_app/graphql/types/token_registration_error.dart';
 import 'package:flutter_test_app/graphql/types/token_registration_response.dart';
 import 'package:flutter_test_app/graphql/types/token_registration_success.dart';
 import 'package:flutter_test_app/models/access_token_model.dart';
+import 'package:flutter_test_app/redux/app/app_state.dart';
+import 'package:flutter_test_app/redux/auth/auth_actions.dart';
 import 'package:flutter_test_app/services/authenticator.dart';
 import 'package:flutter_test_app/services/storage_manager.dart';
+import 'package:redux/redux.dart';
 
-class AuthentificationModel {
-  final BuildContext context;
+class AuthenticationModel {
   final StorageManager storage = StorageManager(mode: StorageManagerMode.app);
+  final Store<AppState> store;
 
-  AuthentificationModel(this.context);
+  AuthenticationModel({
+    required this.store,
+  });
 
   Future<String?> requestAuthorization(String login, String password) async {
     TokenRegistrationResponse response =
@@ -26,6 +30,7 @@ class AuthentificationModel {
       String? token = data.payload.accessToken.token;
 
       storage.set(StorageManagerRecord(key: 'token', content: token));
+      store.dispatch(AuthActionSetAccessToken(token));
 
       return token;
     }
@@ -34,7 +39,7 @@ class AuthentificationModel {
   }
 
   Future<void> resetToken() async {
-    // store.dispatch(SetTokenAction(''));
+    store.dispatch(AuthActionsResetAuth());
     storage.clear('@token');
   }
 
