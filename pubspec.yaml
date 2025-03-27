@@ -43,6 +43,7 @@ dependencies:
   provider: ^6.1.2
   crypto: ^3.0.6
   mapbox_maps_flutter: ^2.5.1
+  flutter_redux: ^0.10.0
 
 dev_dependencies:
   flutter_test:

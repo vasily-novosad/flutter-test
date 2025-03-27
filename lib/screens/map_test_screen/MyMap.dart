@@ -1,4 +1,3 @@
-import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
@@ -23,9 +22,9 @@ class _MyMapState extends State<MyMap> {
   void _init() {
 
 
-    String ACCESS_TOKEN =
+    String accessToken =
         'pk.eyJ1IjoidGxrdHJhbnNmZXIiLCJhIjoiY2t3MXZnNHFmMDQ1dTMxcWxrd3Bxem82MSJ9.yj2Nd75H9_LqcZuLZdWKug';
-    MapboxOptions.setAccessToken(ACCESS_TOKEN);
+    MapboxOptions.setAccessToken(accessToken);
     print('>>>>>>>>> Init function');
     setState(() {
 
