@@ -15,7 +15,7 @@ class LoginScreenViewModel {
 
   LoginScreenViewModel(this.context) {
     store = StoreProvider.of<AppState>(context);
-    authModel = AuthenticationModel(store: store);
+    authModel = AuthenticationModel(context: context);
     tokenValue = null;
   }
 

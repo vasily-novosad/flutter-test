@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_test_app/services/logger.dart';
 import 'package:flutter_test_app/components/button/button.dart';
 
 class OrderInfo extends StatelessWidget {
@@ -6,17 +7,30 @@ class OrderInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const viewModel = _OrderInfoViewModel();
     return Column(children: [
       Button(
           text: 'Get order info',
-          onPressed: () {
-            print('to fetch');
+          onPressed: () async {
+            String orderID = '94b01b98-caff-4d56-9303-67a4245a1917';
+            await viewModel.fetchOrderCallback(orderID);
           }),
-
-      Text('order #<the number will be here>'),
+      Text(viewModel.labelText),
     ]);
   }
 }
+
+class _OrderInfoViewModel {
+  const _OrderInfoViewModel();
+
+  Future<void> fetchOrderCallback(String id) async {
+    Logger.log('to fetch');
+
+  }
+
+  String get labelText => 'Order not loaded';
+}
+
 //
 // class OrderInfoViewModel {
 //   bool _isLoading = false;

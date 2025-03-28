@@ -1,3 +1,5 @@
+import 'package:flutter/widgets.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_test_app/graphql/types/token_registration_error.dart';
 import 'package:flutter_test_app/graphql/types/token_registration_response.dart';
 import 'package:flutter_test_app/graphql/types/token_registration_success.dart';
@@ -9,16 +11,21 @@ import 'package:flutter_test_app/services/storage_manager.dart';
 import 'package:redux/redux.dart';
 
 class AuthenticationModel {
-  final StorageManager storage = StorageManager(mode: StorageManagerMode.app);
-  final Store<AppState> store;
+  late BuildContext _context;
+  late StorageManager _storage = StorageManager(mode: StorageManagerMode.app);
+  late Store<AppState> _store;
 
   AuthenticationModel({
-    required this.store,
-  });
+    required BuildContext context,
+  }) {
+    _context = context;
+    _storage = StorageManager(mode: StorageManagerMode.app);
+    _store = StoreProvider.of<AppState>(context);
+  }
 
   Future<String?> requestAuthorization(String login, String password) async {
     TokenRegistrationResponse response =
-        await Auth().auth(login: login, password: password);
+        await Auth(context: _context).auth(login: login, password: password);
 
     if (response.error is TokenRegistrationError) {
       return null;
@@ -29,8 +36,8 @@ class AuthenticationModel {
           response.success as TokenRegistrationSuccess;
       String? token = data.payload.accessToken.token;
 
-      storage.set(StorageManagerRecord(key: 'token', content: token));
-      store.dispatch(AuthActionSetAccessToken(token));
+      _storage.set(StorageManagerRecord(key: 'token', content: token));
+      _store.dispatch(AuthActionSetAccessToken(token));
 
       return token;
     }
@@ -39,8 +46,8 @@ class AuthenticationModel {
   }
 
   Future<void> resetToken() async {
-    store.dispatch(AuthActionsResetAuth());
-    storage.clear('@token');
+    _store.dispatch(AuthActionsResetAuth());
+    _storage.clear('@token');
   }
 
   bool isTokenEmpty(String? token) {

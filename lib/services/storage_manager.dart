@@ -1,20 +1,23 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:developer' as developer;
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 
 class StorageManager {
-  final StorageManagerMode? mode;
+  late StorageManagerMode? _mode;
 
-  const StorageManager({this.mode = StorageManagerMode.cache});
+  StorageManager({StorageManagerMode? mode}) {
+    _mode = mode ?? StorageManagerMode.cache;
+  }
 
   Future<Directory> getStoreDir() async {
     Directory? dir;
-    if (mode == StorageManagerMode.app) {
+    if (_mode == StorageManagerMode.app) {
       dir = await getApplicationSupportDirectory();
     }
 
-    if (mode == StorageManagerMode.cache) {
+    if (_mode == StorageManagerMode.cache) {
       dir = await getApplicationCacheDirectory();
     }
 
@@ -89,7 +92,7 @@ class StorageManager {
 
         return parsedRecord;
       } catch (e) {
-        print('Parsing error');
+        developer.log('Parsing error');
 
         return null;
       }
@@ -121,8 +124,11 @@ class StorageManagerRecord {
   }
 
   String get key => _key;
+
   DateTime? get expired => _expired;
+
   String get content => _content;
+
   bool get isExpired {
     if (_expired == null) {
       return false;

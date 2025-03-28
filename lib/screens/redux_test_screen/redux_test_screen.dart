@@ -7,16 +7,12 @@ final class ReduxTestScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Redux test s'),
-      ),
-      body: Row(
-        children: [
-          FontSizeView(),
-          FontSizeDispatcher(),
-        ],
-      ),
+    return Row(
+      children: [
+        ElevatedButton(onPressed: () {}, child: Text("check logger")),
+        FontSizeView(),
+        FontSizeDispatcher(),
+      ],
     );
   }
 }

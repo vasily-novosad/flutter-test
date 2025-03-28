@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test_app/components/button/button.dart';
+import 'package:flutter_test_app/routes/profile_routes.dart';
 import 'package:flutter_test_app/screens/home_screen/order_info.dart';
 import 'package:flutter_test_app/services/storage_manager.dart';
 import 'package:go_router/go_router.dart';
@@ -24,19 +25,13 @@ class _HomeScreen extends State<HomeScreen> {
               ElevatedButton(
                 child: Text('Go to Redux test screen'),
                 onPressed: () {
-                  context.go('/redux');
-                },
-              ),
-              ElevatedButton(
-                child: Text('Go to maps'),
-                onPressed: () {
-                  context.go('/profile/map');
+                  context.go('/profile/redux');
                 },
               ),
               ElevatedButton(
                   child: Text('Go to Login screen'),
                   onPressed: () {
-                    context.go('/login');
+                    context.go('/profile/login');
                   }),
               ElevatedButton(
                   child: Text('Go to info'),

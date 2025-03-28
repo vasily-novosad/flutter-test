@@ -5,6 +5,8 @@ import 'package:flutter_test_app/graphql/types/token_registration_success.dart';
 import 'package:flutter_test_app/services/graphql.dart';
 
 class Auth extends GraphQL {
+  Auth({required super.context});
+
   Future<TokenRegistrationResponse> auth(
       {required String login, required String password}) async {
     const String query = r'''

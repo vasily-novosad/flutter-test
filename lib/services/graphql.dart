@@ -1,28 +1,24 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:flutter_test_app/redux/app/app_state.dart';
 import 'package:flutter_test_app/services/storage_manager.dart';
 import 'package:http/http.dart' as http;
 import 'package:crypto/crypto.dart';
 import 'dart:developer';
 
-final class GraphQLError {
-  String? message;
-
-  GraphQLError({this.message});
-}
-
-final class GraphQLResponse<T> {
-  final T? data;
-  final List<GraphQLError>? errors;
-  GraphQLResponse({this.data, this.errors});
-}
-
 class GraphQL {
+  late String _endpoint;
   final StorageManager cacheManager =
       StorageManager(mode: StorageManagerMode.cache);
 
-  String endpoint = 'https://crm.bio-transfer.ru/graphql';
+  GraphQL({
+    required BuildContext context,
+  }) {
+    _endpoint = StoreProvider.of<AppState>(context).state.graphql.endpoint;
+  }
 
   Map<String, dynamic> _parseResponse(String jsonString) {
     Map<String, dynamic> parsed = json.decode(jsonString);
@@ -70,7 +66,7 @@ class GraphQL {
       }
     }
 
-    Uri url = Uri.parse(endpoint);
+    Uri url = Uri.parse(_endpoint);
     Map<String, String> requestHeaders = {
       'content-type': 'application/json',
       'user-agent': 'flutter:app'
@@ -140,4 +136,17 @@ class GraphQL {
 
     return errors;
   }
+}
+
+final class GraphQLError {
+  String? message;
+
+  GraphQLError({this.message});
+}
+
+final class GraphQLResponse<T> {
+  final T? data;
+  final List<GraphQLError>? errors;
+
+  GraphQLResponse({this.data, this.errors});
 }

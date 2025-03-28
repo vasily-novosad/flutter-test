@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_test_app/models/authentication_model.dart';
-import 'package:flutter_test_app/redux/app/app_state.dart';
 import 'package:go_router/go_router.dart';
 
 final class FieldLoginController {
@@ -26,7 +24,7 @@ final class FormController {
       String login = FormController.login.controller.value.text.trim();
       String password = FormController.password.controller.value.text.trim();
 
-      AuthenticationModel(store: StoreProvider.of<AppState>(context))
+      AuthenticationModel(context: context)
           .requestAuthorization(login, password)
           .then((maybeToken) {
         if (context.mounted) {

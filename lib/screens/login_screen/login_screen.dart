@@ -19,36 +19,33 @@ class LoginScreen extends StatelessWidget {
     final StorageManager storage = StorageManager(mode: StorageManagerMode.app);
     LoginScreenViewModel viewModel = LoginScreenViewModel(context);
 
-    return Scaffold(
-      appBar: MyAppbar(Text('Login screen')).of(context),
-      body: SingleChildScrollView(
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              LoginForm(),
-              Button(
-                  text: 'Go to home screen',
-                  onPressed: () {
-                    GoRouter.of(context).go('/profile');
-                  }),
-              Builder(builder: (_) {
-                return Text('just example');
-              }),
-              TokenInformer(),
-              Builder(builder: (context) {
-                if (viewModel.isFetching) {
-                  return CircularProgressIndicator();
-                }
+    return SingleChildScrollView(
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            LoginForm(),
+            Button(
+                text: 'Go to home screen',
+                onPressed: () {
+                  GoRouter.of(context).go('/profile');
+                }),
+            Builder(builder: (_) {
+              return Text('just example');
+            }),
+            TokenInformer(),
+            Builder(builder: (context) {
+              if (viewModel.isFetching) {
+                return CircularProgressIndicator();
+              }
 
-                return Button(
-                  text: viewModel.autologinButtonLabel,
-                  onPressed: () => viewModel.autologinButtonPress(),
-                );
-              }),
-            ],
-          ),
+              return Button(
+                text: viewModel.autologinButtonLabel,
+                onPressed: () => viewModel.autologinButtonPress(),
+              );
+            }),
+          ],
         ),
       ),
     );
