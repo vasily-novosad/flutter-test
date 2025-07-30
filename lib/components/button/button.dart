@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_test_app/themes/main/colors.dart';
 
 class Button extends StatelessWidget {
   final String text;
@@ -15,6 +16,11 @@ class Button extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialButton(
+      color: ThemeColors.bottomBarBackground,
+      textColor: ThemeColors.textPrimary,
+      elevation: 0,
+
+
       onPressed: () {
         if (disabled.runtimeType.toString() == 'boolean' && disabled == true) {
           return;

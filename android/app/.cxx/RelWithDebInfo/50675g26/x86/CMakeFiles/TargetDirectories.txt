@@ -1,0 +1,2 @@
+/home/admin/Projects/flutter-test/android/app/.cxx/RelWithDebInfo/50675g26/x86/CMakeFiles/edit_cache.dir
+/home/admin/Projects/flutter-test/android/app/.cxx/RelWithDebInfo/50675g26/x86/CMakeFiles/rebuild_cache.dir

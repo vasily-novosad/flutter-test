@@ -1,63 +1,15 @@
 import 'dart:convert';
 import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 
-class StorageManager {
-  final StorageManagerMode? mode;
+class StorageManager extends StorageDesktopDriver {
+  @override
+  final StorageManagerMode mode;
 
-  const StorageManager({this.mode = StorageManagerMode.cache});
-
-  Future<Directory> getStoreDir() async {
-    Directory? dir;
-    if (mode == StorageManagerMode.app) {
-      dir = await getApplicationSupportDirectory();
-    }
-
-    if (mode == StorageManagerMode.cache) {
-      dir = await getApplicationCacheDirectory();
-    }
-
-    if (dir!.existsSync()) {
-      dir.createSync(recursive: true);
-    }
-
-    return dir;
-  }
-
-  Future<String> buildFilename(String key) async {
-    final dir = await getStoreDir();
-    final filePath = path.join(dir.path, '$key.json');
-
-    return filePath;
-  }
-
-  Future<File?> getFileByName(String baseFilename) async {
-    final dir = await getStoreDir();
-    final cachePath = path.join(dir.path, baseFilename);
-    final cacheFile = File(cachePath);
-
-    if (!cacheFile.existsSync()) {
-      return null;
-    }
-
-    return cacheFile;
-  }
-
-  Future<void> writeFile(String baseFilename, String content) async {
-    final dir = await getStoreDir();
-    final fullPath = path.join(dir.path, baseFilename);
-    final file = File(fullPath);
-
-    file.writeAsStringSync(content, mode: FileMode.write);
-  }
-
-  Future<File?> getFileByKey(String key) async {
-    String baseFilename = await buildFilename(key);
-    File? file = await getFileByName(baseFilename);
-
-    return file;
-  }
+  StorageManager({this.mode = StorageManagerMode.cache});
 
   Future<bool> has(String key) async {
     File? file = await getFileByKey(key);
@@ -97,12 +49,6 @@ class StorageManager {
 
     return null;
   }
-
-  Future<void> deleteStore() async {
-    final dir = await getStoreDir();
-
-    dir.deleteSync(recursive: true);
-  }
 }
 
 class StorageManagerRecord {
@@ -121,8 +67,11 @@ class StorageManagerRecord {
   }
 
   String get key => _key;
+
   DateTime? get expired => _expired;
+
   String get content => _content;
+
   bool get isExpired {
     if (_expired == null) {
       return false;
@@ -160,4 +109,98 @@ class StorageManagerRecord {
 enum StorageManagerMode {
   cache,
   app,
+}
+
+abstract class StorageManagerDriver {
+  @protected
+  Future<Directory> getStoreDir();
+
+  @protected
+  Future<String> buildFilename(String key);
+
+  @protected
+  Future<File?> getFileByName(String baseFilename);
+
+  @protected
+  Future<void> writeFile(String baseFilename, String content);
+
+  @protected
+  Future<File?> getFileByKey(String key);
+
+  @protected
+  Future<void> deleteStore();
+}
+
+class StorageDesktopDriver implements StorageManagerDriver {
+  final StorageManagerMode? mode;
+  const StorageDesktopDriver({this.mode = StorageManagerMode.cache});
+
+  @override
+  @protected
+  Future<String> buildFilename(String key) async {
+    final dir = await getStoreDir();
+    final filePath = path.join(dir.path, '$key.json');
+
+    return filePath;
+  }
+
+  @override
+  @protected
+  Future<File?> getFileByKey(String key) async {
+    String baseFilename = await buildFilename(key);
+    File? file = await getFileByName(baseFilename);
+
+    return file;
+  }
+
+  @override
+  @protected
+  Future<File?> getFileByName(String baseFilename) async {
+    final dir = await getStoreDir();
+    final cachePath = path.join(dir.path, baseFilename);
+    final cacheFile = File(cachePath);
+
+    if (!cacheFile.existsSync()) {
+      return null;
+    }
+
+    return cacheFile;
+  }
+
+  @override
+  @protected
+  Future<Directory> getStoreDir() async {
+    Directory? dir;
+    if (mode == StorageManagerMode.app) {
+      dir = await getApplicationSupportDirectory();
+    }
+
+    if (mode == StorageManagerMode.cache) {
+      dir = await getApplicationCacheDirectory();
+    }
+
+    if (dir!.existsSync()) {
+      dir.createSync(recursive: true);
+    }
+
+    return dir;
+  }
+
+  @override
+  @protected
+  Future<void> writeFile(String baseFilename, String content) async {
+    final dir = await getStoreDir();
+    final fullPath = path.join(dir.path, baseFilename);
+    final file = File(fullPath);
+
+    file.writeAsStringSync(content, mode: FileMode.write);
+  }
+
+  @override
+  @protected
+  Future<void> deleteStore() async {
+    final dir = await getStoreDir();
+
+    dir.deleteSync(recursive: true);
+  }
 }
