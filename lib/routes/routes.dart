@@ -4,12 +4,14 @@ import 'package:flutter_test_app/screens/discharge_screen.dart';
 import 'package:flutter_test_app/screens/help_screen.dart';
 import 'package:flutter_test_app/screens/home_screen.dart';
 import 'package:flutter_test_app/screens/menu_screen.dart';
+import 'package:flutter_test_app/screens/profile_screen.dart';
 import 'package:flutter_test_app/screens/transfer_screen.dart';
 import 'package:flutter_test_app/screens/transfers_screen.dart';
 import 'package:flutter_test_app/screens/user_settings_screen.dart';
 import 'package:go_router/go_router.dart';
 
-import 'bottom_navigator_wrapper.dart';
+import '../screens/profile_change_password_screen.dart';
+import 'scaffold_with_bottom_bar.dart';
 
 final GlobalKey<NavigatorState> _rootNavigatorKey =
     GlobalKey<NavigatorState>(debugLabel: 'root');
@@ -22,7 +24,7 @@ final GoRouter routes = GoRouter(
   routes: [
     StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) {
-          return BottomNavigatorWrapper(navigationShell: navigationShell);
+          return ScaffoldWithBottomBar(navigationShell: navigationShell);
         },
         branches: <StatefulShellBranch>[
           StatefulShellBranch(
@@ -30,9 +32,7 @@ final GoRouter routes = GoRouter(
             routes: <RouteBase>[
               GoRoute(
                 path: '/home',
-                builder: (context, state) {
-                  return HomeScreen();
-                },
+                builder: (context, state) => HomeScreen(),
                 routes: [
                   GoRoute(
                     path: 'transfer/:id', // will be -> /home/transfers
@@ -41,6 +41,16 @@ final GoRouter routes = GoRouter(
 
                       return TransferScreen(transferID: id);
                     },
+                  ),
+                  GoRoute(
+                    path: 'profile',
+                    builder: (context, state) => ProfileScreen(),
+                    routes: [
+                        GoRoute(
+                          path: 'password-change',
+                          builder: (context, state) => ProfileChangePasswordScreen(),
+                        ),
+                    ],
                   )
                 ],
               ),
@@ -49,9 +59,7 @@ final GoRouter routes = GoRouter(
           StatefulShellBranch(routes: [
             GoRoute(
               path: '/transfers',
-              builder: (context, state) {
-                return TransfersScreen();
-              },
+              builder: (context, state) => TransfersScreen(),
               routes: [
                 GoRoute(
                   path: 'transfer/:id', // will be -> /home/transfers

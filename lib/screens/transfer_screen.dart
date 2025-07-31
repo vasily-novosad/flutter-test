@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test_app/components/appbar/appbar.dart';
 
+import '../themes/main/colors.dart';
+
 class TransferScreen extends StatelessWidget {
   final String transferID;
 
@@ -17,8 +19,15 @@ class TransferScreen extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('Transfer Screen'),
-                Text('ID: $transferID'),
+                Text('кп. Кривые ручки'),
+                Text('10.5m'),
+                SizedBox(height: 30,),
+                Text(
+                  'Ул. Цветочная $transferID',
+                  style: TextStyle(
+                      color: ThemeColors.textPrimary.withAlpha(120)
+                  ),
+                ),
               ],
             ),
           ),

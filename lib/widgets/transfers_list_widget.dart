@@ -14,7 +14,7 @@ class TransfersListWidget extends StatelessWidget {
 
     List<Widget> items = [];
 
-    for (int i in Iterable<int>.generate(1000).toList()) {
+    for (int i in Iterable<int>.generate(100).toList()) {
       items.add(Material(
           color: ThemeColors.background,
           child: InkWell(
@@ -23,7 +23,29 @@ class TransfersListWidget extends StatelessWidget {
               color: ThemeColors.bottomBarBackground,
               padding: EdgeInsets.only(left: 10, right: 10, top: 20, bottom: 20),
               margin: EdgeInsets.only(bottom: 1, top: 1),
-              child: Text('Transfer $i'),
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('кп. Кривые ручки'),
+                      Text('10.5m'),
+                    ],
+                  ),
+                  SizedBox(height: 8,),
+                  Row(
+                    children: [
+                      Text(
+                        'Ул. Цветочная $i',
+                        style: TextStyle(
+                          color: ThemeColors.textPrimary.withAlpha(120)
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              ),
             ),
           )));
     }

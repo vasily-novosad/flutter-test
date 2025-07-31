@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test_app/components/appbar/appbar.dart';
-import 'package:flutter_test_app/components/button/button.dart';
+import 'package:flutter_test_app/widgets/button.dart';
 import 'package:flutter_test_app/components/login_form/login_form.dart';
 import 'package:flutter_test_app/models/authentification_model.dart';
 import 'package:flutter_test_app/providers/auth_provider.dart';
@@ -27,7 +27,7 @@ class LoginScreen extends StatelessWidget {
               LoginForm(),
               Button(
                   text: 'Go to home screen',
-                  onPressed: () {
+                  onTap: () {
                     GoRouter.of(context).go('/profile');
                   }),
               Builder(builder: (_) {
@@ -49,7 +49,7 @@ class LoginScreen extends StatelessWidget {
 
                 return Button(
                     text: label,
-                    onPressed: () async {
+                    onTap: () async {
                       if (viewModel.tokenValue != null) {
                         AuthentificationModel(context).resetToken();
                         Provider.of<AuthProvider>(context, listen: false)

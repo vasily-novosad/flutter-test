@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_test_app/components/button/button.dart';
+import 'package:flutter_test_app/widgets/button.dart';
 import 'package:flutter_test_app/providers/counter_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -22,7 +22,7 @@ class CounterButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final _CounterButtonViewModel viewModel = _CounterButtonViewModel(context);
 
-    return Button(text: viewModel.label, onPressed: viewModel.onPressed);
+    return Button(text: viewModel.label, onTap: viewModel.onPressed);
   }
 }
 

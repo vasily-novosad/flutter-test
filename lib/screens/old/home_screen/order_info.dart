@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_test_app/components/button/button.dart';
+import 'package:flutter_test_app/widgets/button.dart';
 import 'package:flutter_test_app/graphql/types/order.dart';
 import 'package:flutter_test_app/providers/auth_provider.dart';
 import 'package:flutter_test_app/services/graphql.dart';
@@ -15,7 +15,7 @@ class OrderInfo extends StatelessWidget {
     return Column(children: [
       Button(
           text: 'Get order info',
-          onPressed: () {
+          onTap: () {
             String? token =
                 Provider.of<AuthProvider>(context, listen: false).tokenValue;
             Provider.of<OrderInfoViewModel>(context, listen: false)

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_test_app/components/button/button.dart';
+import 'package:flutter_test_app/widgets/button.dart';
 import 'package:flutter_test_app/screens/old/home_screen/order_info.dart';
 import 'package:flutter_test_app/services/storage_manager.dart';
 import 'package:go_router/go_router.dart';
@@ -34,13 +34,13 @@ class _HomeScreen extends State<HomeScreen> {
                   }),
               Button(
                   text: 'Clear cache',
-                  onPressed: () {
+                  onTap: () {
                     StorageManager(mode: StorageManagerMode.cache)
                         .deleteStore();
                   }),
               Button(
                   text: 'Clear data',
-                  onPressed: () {
+                  onTap: () {
                     StorageManager(mode: StorageManagerMode.app)
                         .deleteStore();
                   }),
