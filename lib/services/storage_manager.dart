@@ -1,15 +1,20 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 
 class StorageManager extends StorageDesktopDriver {
   @override
-  final StorageManagerMode mode;
+  late StorageManagerMode _mode;
 
-  StorageManager({this.mode = StorageManagerMode.cache});
+  StorageManager({
+    StorageManagerMode? mode,
+  }) {
+    _mode = mode ?? StorageManagerMode.cache;
+  }
+
 
   Future<bool> has(String key) async {
     File? file = await getFileByKey(key);
@@ -37,7 +42,7 @@ class StorageManager extends StorageDesktopDriver {
       try {
         final content = file.readAsStringSync(encoding: utf8);
         StorageManagerRecord parsedRecord =
-            StorageManagerRecord.fromJSON(content);
+        StorageManagerRecord.fromJSON(content);
 
         return parsedRecord;
       } catch (e) {
@@ -132,8 +137,12 @@ abstract class StorageManagerDriver {
 }
 
 class StorageDesktopDriver implements StorageManagerDriver {
-  final StorageManagerMode? mode;
-  const StorageDesktopDriver({this.mode = StorageManagerMode.cache});
+  late StorageManagerMode _mode;
+
+  StorageDesktopDriver({StorageManagerMode? mode}) {
+    _mode = mode ?? StorageManagerMode.cache;
+  }
+
 
   @override
   @protected
@@ -171,11 +180,11 @@ class StorageDesktopDriver implements StorageManagerDriver {
   @protected
   Future<Directory> getStoreDir() async {
     Directory? dir;
-    if (mode == StorageManagerMode.app) {
+    if (_mode == StorageManagerMode.app) {
       dir = await getApplicationSupportDirectory();
     }
 
-    if (mode == StorageManagerMode.cache) {
+    if (_mode == StorageManagerMode.cache) {
       dir = await getApplicationCacheDirectory();
     }
 

@@ -6,11 +6,13 @@ class BaseButton extends StatelessWidget {
   final Widget child;
   final VoidCallback? onTap;
   final bool? expanded;
+  final Color? color;
 
   const BaseButton({
     super.key,
     this.onTap,
     this.expanded,
+    this.color,
     required this.child,
   });
 
@@ -20,7 +22,7 @@ class BaseButton extends StatelessWidget {
       return SizedBox(
         child: Material(
           borderRadius: BorderRadius.circular(4),
-          color: ThemeColors.bottomBarBackground,
+          color: color ?? ThemeColors.bottomBarBackground,
           child: InkWell(
             borderRadius: BorderRadius.circular(4),
             onTap: onTap,

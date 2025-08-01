@@ -1,12 +1,24 @@
 import 'dart:async';
 
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test_app/routes/routes.dart';
 import 'package:flutter_test_app/screens/splash_screen.dart';
 import 'package:flutter_test_app/services/storage_manager.dart';
 import 'package:flutter_test_app/themes/main/theme.dart';
 
-void main() {
+
+// List<CameraDescription> cameras = [];
+
+Future<void> main() async {
+
+  // try {
+  //   WidgetsFlutterBinding.ensureInitialized();
+  //   cameras = await availableCameras();
+  // } on CameraException catch (e) {
+  //   print('Error in fetching the cameras: $e');
+  // }
+
   runApp(MyApp());
 }
 
@@ -49,12 +61,14 @@ class _MyApp extends State<MyApp> {
 
     if (_loadedState != LoadingState.loaded) {
       return MaterialApp(
+        debugShowCheckedModeBanner: false,
         theme: MainTheme.dartTheme,
         home: SplashScreen(),
       );
     }
 
     return MaterialApp.router(
+      debugShowCheckedModeBanner: false,
       theme: MainTheme.dartTheme,
       routerConfig: routes,
     );

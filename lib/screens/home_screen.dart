@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_test_app/widgets/button.dart';
 import 'package:flutter_test_app/widgets/safe_frame.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
@@ -11,113 +12,159 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    void goToTransfers() => context.go('/transfers');
-
-    viewTheTransfer(String id) => () => context.go('/home/transfer/$id');
-    DateTime now = DateTime.now();
-    String formattedDate = DateFormat('MMMMd').format(now);
-    String formattedDay = DateFormat('E').format(now);
-
     return SafeFrame(
-      children: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: EdgeInsets.only(top: 40, bottom: 10),
-            child: Text(
-              formattedDate,
-              style: TextStyle(
-                fontSize: 24,
-              ),
+      children: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ScreenHeader(),
+            ProfileBox(),
+            SizedBox(height: 20),
+            ButtonsList(),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class ButtonsList extends StatelessWidget {
+  const ButtonsList({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Row(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            MainButton(
+              icon: ImageIcon(AssetImage('assets/icons/icon_call.png')),
+              label: 'Problem',
+              onTap: () => context.go('/help'),
             ),
-          ),
-          Text(
-            formattedDay,
+            SizedBox(width: 10),
+            MainButton(
+              icon: ImageIcon(AssetImage('assets/icons/icon_call.png')),
+              label: 'Problem',
+              onTap: () => context.go('/help'),
+            ),
+          ],
+        ),
+        SizedBox(height: 10),
+        Row(
+          children: [
+            MainButton(
+              icon: ImageIcon(AssetImage('assets/icons/icon_call.png')),
+              label: 'Transfers',
+              onTap: () => context.go('/transfers'),
+            ),
+            SizedBox(width: 10),
+            MainButton(
+              icon: ImageIcon(AssetImage('assets/icons/icon_call.png')),
+              label: 'Call dispatch',
+              onTap: () => context.go('/help'),
+            ),
+            // Expanded(
+            //   child: SizedBox(),
+            // ),
+            // BaseButton(
+            //   icon: ImageIcon(AssetImage('assets/icons/icon_call.png')),
+            //   label: 'Problem',
+            // ),
+          ],
+        ),
+        SizedBox(height: 10),
+        Row(
+          children: [
+            MainButton(
+              variant: ButtonVariant.accent,
+              icon: ImageIcon(AssetImage('assets/icons/icon_call.png'),
+                  color: ThemeColors.surface),
+              label: 'Открыть смену',
+              onTap: () => context.go('/home/shift-open'),
+            ),
+            Expanded(
+              child: SizedBox(),
+            )
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+class ScreenHeader extends StatelessWidget {
+  const ScreenHeader({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final DateTime now = DateTime.now();
+    final String formattedDate = DateFormat('MMMMd').format(now);
+    final String formattedDay = DateFormat('E').format(now);
+
+    return Column(
+      children: [
+        Padding(
+          padding: EdgeInsets.only(top: 10, bottom: 10),
+          child: Text(
+            formattedDate,
             style: TextStyle(
-              fontSize: 12,
-              color: ThemeColors.textPrimary.withAlpha(100),
+              fontSize: 24,
             ),
           ),
-          Container(
-            padding: EdgeInsets.all(2),
-            decoration: BoxDecoration(
-              color: ThemeColors.bottomBarBackground,
-            ),
-            child: Row(
-              children: [
-                BaseButton(
-                  onTap: () => context.go('/home/profile'),
-                  child: Image.asset(
-                    'assets/photos/profile-photo.png',
-                    fit: BoxFit.cover,
-                    width: 80,
-                    height: 80,
-                  ),
-                ),
-                BaseButton(
-                  expanded: true,
-                  onTap: () => context.go('/home/profile'),
-                  child: Padding(
-                    padding: EdgeInsets.only(left: 8),
-                    child: Text(
-                      maxLines: 2,
-                      softWrap: true,
-                      overflow: TextOverflow.ellipsis,
-                      'Константин\nКонстантинопольски',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w300,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
+        ),
+        Text(
+          formattedDay,
+          style: TextStyle(
+            fontSize: 12,
+            color: ThemeColors.textPrimary.withAlpha(100),
           ),
+        )
+      ],
+    );
+  }
+}
 
-          SizedBox(height: 20),
-          Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              MainButton(
-                icon: ImageIcon(AssetImage('assets/icons/icon_call.png')),
-                label: 'Problem',
-                onTap: () => context.go('/help'),
-              ),
-              SizedBox(width: 10),
-              MainButton(
-                icon: ImageIcon(AssetImage('assets/icons/icon_call.png')),
-                label: 'Problem',
-                onTap: () => context.go('/help'),
-              ),
-            ],
-          ),
-          SizedBox(height: 10),
-          Row(
-            children: [
-              MainButton(
-                icon: ImageIcon(AssetImage('assets/icons/icon_call.png')),
-                label: 'Transfers',
-                onTap: () => context.go('/transfers'),
-              ),
-              SizedBox(width: 10),
-              MainButton(
-                icon: ImageIcon(AssetImage('assets/icons/icon_call.png')),
-                label: 'Call dispatch',
-                onTap: () => context.go('/help'),
-              ),
-              // Expanded(
-              //   child: SizedBox(),
-              // ),
-              // BaseButton(
-              //   icon: ImageIcon(AssetImage('assets/icons/icon_call.png')),
-              //   label: 'Problem',
-              // ),
-            ],
-          )
+class ProfileBox extends StatelessWidget {
+  const ProfileBox({super.key});
 
-          ///
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(2),
+      decoration: BoxDecoration(
+        color: ThemeColors.bottomBarBackground,
+      ),
+      child: Row(
+        children: [
+          BaseButton(
+            onTap: () => context.go('/home/profile'),
+            child: Image.asset(
+              'assets/photos/profile-photo.png',
+              fit: BoxFit.cover,
+              width: 80,
+              height: 80,
+            ),
+          ),
+          BaseButton(
+            expanded: true,
+            onTap: () => context.go('/home/profile'),
+            child: Padding(
+              padding: EdgeInsets.only(left: 8),
+              child: Text(
+                maxLines: 2,
+                softWrap: true,
+                overflow: TextOverflow.ellipsis,
+                'Константин\nКонстантинопольски',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w300,
+                ),
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -128,17 +175,37 @@ class MainButton extends StatelessWidget {
   final Widget icon;
   final String label;
   final VoidCallback? onTap;
+  final ButtonVariant? variant;
 
   const MainButton({
     super.key,
     this.onTap,
     required this.label,
     required this.icon,
+    this.variant,
   });
+
+  List<Color> resolveColors() {
+    List<Color> list = [];
+
+    if (variant != null && variant == ButtonVariant.accent) {
+      list.add(ThemeColors.primaryColor);
+      list.add(ThemeColors.surface);
+
+      return list;
+    }
+
+    list.add(ThemeColors.bottomBarBackground);
+    list.add(ThemeColors.textPrimary);
+    return list;
+  }
 
   @override
   Widget build(BuildContext context) {
+    List<Color> colors = resolveColors();
+
     return BaseButton(
+      color: colors[0],
       expanded: true,
       onTap: onTap,
       child: Padding(
@@ -149,7 +216,10 @@ class MainButton extends StatelessWidget {
             icon,
             Padding(
               padding: EdgeInsets.only(top: 10),
-              child: Text(label),
+              child: Text(
+                label,
+                style: TextStyle(color: colors[1]),
+              ),
             )
           ],
         ),

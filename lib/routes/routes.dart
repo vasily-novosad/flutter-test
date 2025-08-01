@@ -5,6 +5,9 @@ import 'package:flutter_test_app/screens/help_screen.dart';
 import 'package:flutter_test_app/screens/home_screen.dart';
 import 'package:flutter_test_app/screens/menu_screen.dart';
 import 'package:flutter_test_app/screens/profile_screen.dart';
+import 'package:flutter_test_app/screens/shift_opan_select_wheels.dart';
+import 'package:flutter_test_app/screens/shift_open_camera_view_screen.dart';
+import 'package:flutter_test_app/screens/shift_open_photos.dart';
 import 'package:flutter_test_app/screens/transfer_screen.dart';
 import 'package:flutter_test_app/screens/transfers_screen.dart';
 import 'package:flutter_test_app/screens/user_settings_screen.dart';
@@ -46,12 +49,34 @@ final GoRouter routes = GoRouter(
                     path: 'profile',
                     builder: (context, state) => ProfileScreen(),
                     routes: [
-                        GoRoute(
-                          path: 'password-change',
-                          builder: (context, state) => ProfileChangePasswordScreen(),
-                        ),
+                      GoRoute(
+                        path: 'password-change',
+                        builder: (context, state) =>
+                            ProfileChangePasswordScreen(),
+                      ),
                     ],
-                  )
+                  ),
+                  GoRoute(
+                    path: 'shift-open',
+                    builder: (context, state) => ShiftOpenSelectWheelsScreen(),
+                    routes: [
+                      GoRoute(
+                        path: 'photos',
+                        builder: (context, state) => ShiftOpenPhotosScreen(),
+                        routes: [
+                          GoRoute(
+                            path: 'camera',
+                            builder: (context, state) {
+                              // int index =
+                              //     state.pathParameters['index'] as int ?? -1;
+
+                              return ShiftOpenCameraViewScreen();
+                            },
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ],
               ),
             ],
