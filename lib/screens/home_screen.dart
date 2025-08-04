@@ -40,15 +40,15 @@ class ButtonsList extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             MainButton(
-              icon: ImageIcon(AssetImage('assets/icons/icon_call.png')),
-              label: 'Problem',
+              icon: ImageIcon(AssetImage('assets/icons/icon_question.png')),
+              label: 'Диспетчер',
               onTap: () => context.go('/help'),
             ),
             SizedBox(width: 10),
             MainButton(
-              icon: ImageIcon(AssetImage('assets/icons/icon_call.png')),
-              label: 'Problem',
-              onTap: () => context.go('/help'),
+              icon: ImageIcon(AssetImage('assets/icons/icon_discharge.png')),
+              label: 'Нужен слив',
+              onTap: () => context.go('/discharge'),
             ),
           ],
         ),
@@ -56,15 +56,15 @@ class ButtonsList extends StatelessWidget {
         Row(
           children: [
             MainButton(
-              icon: ImageIcon(AssetImage('assets/icons/icon_call.png')),
-              label: 'Transfers',
+              icon: ImageIcon(AssetImage('assets/icons/icon_route.png')),
+              label: 'Заявки',
               onTap: () => context.go('/transfers'),
             ),
             SizedBox(width: 10),
             MainButton(
-              icon: ImageIcon(AssetImage('assets/icons/icon_call.png')),
-              label: 'Call dispatch',
-              onTap: () => context.go('/help'),
+              icon: ImageIcon(AssetImage('assets/icons/icon_calendar.png')),
+              label: 'Мои смены',
+              onTap: () => context.go('/home/calendar'),
             ),
             // Expanded(
             //   child: SizedBox(),
@@ -80,7 +80,7 @@ class ButtonsList extends StatelessWidget {
           children: [
             MainButton(
               variant: ButtonVariant.accent,
-              icon: ImageIcon(AssetImage('assets/icons/icon_call.png'),
+              icon: ImageIcon(AssetImage('assets/icons/icon_briefcase.png'),
                   color: ThemeColors.surface),
               label: 'Открыть смену',
               onTap: () => context.go('/home/shift-open'),

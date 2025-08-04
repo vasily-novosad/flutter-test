@@ -14,7 +14,7 @@ class ShiftOpenSelectWheelsScreen extends StatelessWidget {
       children: Column(
         children: [
           MyAppbar(
-            title: 'Transfers list',
+            title: 'Открытие смены',
           ),
           Expanded(
             child: SingleChildScrollView(

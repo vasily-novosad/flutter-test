@@ -4,7 +4,8 @@ import 'package:go_router/go_router.dart';
 import '../themes/main/colors.dart';
 
 class TransfersListWidget extends StatelessWidget {
-  const TransfersListWidget({super.key});
+  final double? length;
+  const TransfersListWidget({super.key, this.length});
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +15,8 @@ class TransfersListWidget extends StatelessWidget {
 
     List<Widget> items = [];
 
-    for (int i in Iterable<int>.generate(100).toList()) {
+    final double transfersCount = length ?? 100;
+    for (int i in Iterable<int>.generate(transfersCount.toInt()).toList()) {
       items.add(Material(
           color: ThemeColors.background,
           child: InkWell(

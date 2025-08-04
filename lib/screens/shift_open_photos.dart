@@ -148,7 +148,7 @@ class InteractiveImage extends StatelessWidget {
               image: fName != null && index == idx
                   ? FileImage(File(fName))
                   : AssetImage('assets/ui/no_image.jpg'),
-              height: 720,
+              height: 320,
               fit: BoxFit.cover,
             ),
             onTap: () => context.go('/home/shift-open/photos/camera'),

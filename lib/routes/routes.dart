@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_test_app/screens/calendar_screen.dart';
 import 'package:flutter_test_app/screens/common_settings_screen.dart';
 import 'package:flutter_test_app/screens/discharge_screen.dart';
 import 'package:flutter_test_app/screens/help_screen.dart';
@@ -38,12 +39,16 @@ final GoRouter routes = GoRouter(
                 builder: (context, state) => HomeScreen(),
                 routes: [
                   GoRoute(
-                    path: 'transfer/:id', // will be -> /home/transfers
+                    path: 'transfer/:id', // will be -> /home/transfer/123
                     builder: (context, state) {
                       String id = state.pathParameters['id'] ?? '<no-id>';
 
                       return TransferScreen(transferID: id);
                     },
+                  ),
+                  GoRoute(
+                    path: 'calendar', // will be -> /home/calendar
+                    builder: (context, state) => CalendarScreen(),
                   ),
                   GoRoute(
                     path: 'profile',
@@ -66,12 +71,7 @@ final GoRouter routes = GoRouter(
                         routes: [
                           GoRoute(
                             path: 'camera',
-                            builder: (context, state) {
-                              // int index =
-                              //     state.pathParameters['index'] as int ?? -1;
-
-                              return ShiftOpenCameraViewScreen();
-                            },
+                            builder: (context, state) => ShiftOpenCameraViewScreen(),
                           ),
                         ],
                       ),
@@ -84,7 +84,7 @@ final GoRouter routes = GoRouter(
           StatefulShellBranch(routes: [
             GoRoute(
               path: '/transfers',
-              builder: (context, state) => TransfersScreen(),
+              builder: (context, state)  => TransfersScreen(),
               routes: [
                 GoRoute(
                   path: 'transfer/:id', // will be -> /home/transfers

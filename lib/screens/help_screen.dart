@@ -2,7 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
+import '../components/appbar/appbar.dart';
 import '../widgets/button.dart';
+import '../widgets/safe_frame.dart';
 
 class HelpScreen extends StatelessWidget {
   const HelpScreen({super.key});
@@ -12,34 +14,20 @@ class HelpScreen extends StatelessWidget {
     final streamController = StreamController<Status>.broadcast();
 
 
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text('Help Screen'),
-          StreamBuilder<Status>(
-            stream: streamController.stream,
-            initialData: Status.notSet,
-            builder: (context, snap) {
-              return Text(
-                'Status is ${snap.data.toString()}',
-              );
-            },
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        MyAppbar(title: 'Помощь'),
+        Expanded(
+          child: SafeFrame(
+            children: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [Text('Экран диспетчера')],
+            ),
           ),
-          Button(
-            text: 'Set status',
-            onTap: () {
-              streamController.add(Status.success);
-            },
-          ),
-          Button(
-            text: 'Set status 2',
-            onTap: () {
-              streamController.add(Status.invalid);
-            },
-          )
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

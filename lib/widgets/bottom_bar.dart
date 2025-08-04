@@ -52,25 +52,25 @@ class BottomBar extends StatelessWidget {
         children: [
           BottomTabItem(
             icon: AssetImage('assets/icons/icon_home.png'),
-            label: 'Home',
+            label: 'Домой',
             onSelect: onSelect(0),
             isActive: isActive(0),
           ),
           BottomTabItem(
             icon: AssetImage('assets/icons/icon_route.png'),
-            label: 'Transfers',
+            label: 'Заявки',
             onSelect: onSelect(1),
             isActive: isActive(1),
           ),
           BottomTabItem(
             icon: AssetImage('assets/icons/icon_discharge.png'),
-            label: 'Discharge',
+            label: 'Слив',
             onSelect: onSelect(3),
             isActive: isActive(3),
           ),
           BottomTabItem(
             icon: AssetImage('assets/icons/icon_call.png'),
-            label: 'Help',
+            label: 'Диспетчер',
             onSelect: onSelect(2),
             isActive: isActive(2),
           ),
