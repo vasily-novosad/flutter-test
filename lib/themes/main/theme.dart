@@ -9,9 +9,28 @@ class MainTheme {
       primaryColor: ThemeColors.primaryColor,
       scaffoldBackgroundColor: ThemeColors.background,
       appBarTheme: AppBarTheme(),
+      primaryColorDark: ThemeColors.primaryColor,
       // buttonTheme: ButtonThemeData(
       //   buttonColor: Colors.blueAccent,
       // ),
+      textSelectionTheme: TextSelectionThemeData(
+        selectionColor: ThemeColors.primaryColor.withAlpha(100),
+      ),
+      buttonTheme: ButtonThemeData(
+        buttonColor: ThemeColors.primaryColor,
+        focusColor: ThemeColors.primaryColor,
+      ),
+      checkboxTheme: CheckboxThemeData(
+        fillColor: WidgetStatePropertyAll(Colors.transparent),
+        checkColor: WidgetStatePropertyAll(ThemeColors.textPrimary),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+        side: WidgetStateBorderSide.resolveWith(
+          (states) => BorderSide(
+            width: 1,
+            color: ThemeColors.textPrimary,
+          ),
+        ),
+      ),
       textTheme: TextTheme(
         bodyMedium: TextStyle(
           color: ThemeColors.textPrimary,

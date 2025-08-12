@@ -5,6 +5,7 @@ import 'package:flutter_test_app/screens/discharge_screen.dart';
 import 'package:flutter_test_app/screens/help_screen.dart';
 import 'package:flutter_test_app/screens/home_screen.dart';
 import 'package:flutter_test_app/screens/menu_screen.dart';
+import 'package:flutter_test_app/screens/login_screen.dart';
 import 'package:flutter_test_app/screens/profile_screen.dart';
 import 'package:flutter_test_app/screens/shift_opan_select_wheels.dart';
 import 'package:flutter_test_app/screens/shift_open_camera_view_screen.dart';
@@ -71,11 +72,16 @@ final GoRouter routes = GoRouter(
                         routes: [
                           GoRoute(
                             path: 'camera',
-                            builder: (context, state) => ShiftOpenCameraViewScreen(),
+                            builder: (context, state) =>
+                                ShiftOpenCameraViewScreen(),
                           ),
                         ],
                       ),
                     ],
+                  ),
+                  GoRoute(
+                    path: 'test-screen', // will be -> /home/test-screen
+                    builder: (context, state) => LoginScreen(),
                   ),
                 ],
               ),
@@ -84,7 +90,7 @@ final GoRouter routes = GoRouter(
           StatefulShellBranch(routes: [
             GoRoute(
               path: '/transfers',
-              builder: (context, state)  => TransfersScreen(),
+              builder: (context, state) => TransfersScreen(),
               routes: [
                 GoRoute(
                   path: 'transfer/:id', // will be -> /home/transfers

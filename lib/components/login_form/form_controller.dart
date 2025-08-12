@@ -14,9 +14,16 @@ final class FieldPasswordController {
   final FocusNode focusNode = FocusNode();
 }
 
+final class FieldAcceptAgreementController {
+  final ValueNotifier<bool> controller = ValueNotifier<bool>(false);
+  final FocusNode focusNode = FocusNode();
+}
+
 final class FormController {
   static final FieldLoginController login = FieldLoginController();
   static final FieldPasswordController password = FieldPasswordController();
+  static final FieldAcceptAgreementController acceptAgreement =
+      FieldAcceptAgreementController();
   static final formKey = GlobalKey<FormState>();
 
   static submitForm(BuildContext context) {
@@ -59,14 +66,21 @@ final class FormController {
 class FormValidator {
   static String? validateLogin(String? value) {
     if (value == null || value.isEmpty) {
-      return 'Please enter your username';
+      return 'Пожалуйста, введите логин';
     }
     return null;
   }
 
   static String? validatePassword(String? value) {
     if (value == null || value.isEmpty) {
-      return 'Please enter your password';
+      return 'Пожалуйста, введите пароль';
+    }
+    return null;
+  }
+
+  static String? validateAcceptAgreement(bool? value) {
+    if (value == null || value == false) {
+      return 'Необхожимо принять пользовательское соглашение';
     }
     return null;
   }

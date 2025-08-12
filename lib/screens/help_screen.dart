@@ -13,7 +13,6 @@ class HelpScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final streamController = StreamController<Status>.broadcast();
 
-
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [

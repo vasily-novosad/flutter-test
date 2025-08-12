@@ -85,9 +85,17 @@ class ButtonsList extends StatelessWidget {
               label: 'Открыть смену',
               onTap: () => context.go('/home/shift-open'),
             ),
-            Expanded(
-              child: SizedBox(),
-            )
+            SizedBox(width: 10),
+            MainButton(
+              variant: ButtonVariant.standard,
+              icon: ImageIcon(AssetImage('assets/icons/icon_briefcase.png'),
+                  color: ThemeColors.textPrimary),
+              label: 'Открыть смену',
+              onTap: () => context.go('/home/test-screen'),
+            ),
+            // Expanded(
+            //   child: SizedBox(),
+            // )
           ],
         ),
       ],
